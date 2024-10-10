@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function addTask() {
+  // Get task information
+  var task = document.getElementById("myText").value;
+  if (typeof(Storage) !== "undefined") {
+    var tasks = localStorage.getItem("tasks");
+    if (!tasks) {
+      tasks = [];
+    } else {
+      tasks = JSON.parse(tasks);
+    }
+    // Add task
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
+  } else {
+    document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+  }
+}
+
+function displayTasks() {
+  var tasks = localStorage.getItem("tasks");
+  if (tasks) {
+    tasks = JSON.parse(tasks);
+    var taskListHTML = tasks.map(function(task) {
+      return "<div>" + task + "</div>";
+    }).join("");
+    document.getElementById("result").innerHTML = taskListHTML;
+  }
+}
+window.onload = displayTasks;
+</script>
+</head>
+<body>
+    <input type="text" id="myText" name="myText" placeholder="Enter your To-Do List">
+    <button onclick="addTask()" type="button">Add Task</button>
+<div id="result"></div>
+</body>
+</html>
